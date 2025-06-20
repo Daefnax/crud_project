@@ -19,9 +19,9 @@
                     <input type="text" id="search" name="search" class="form-control shadow-inset-2 form-control-lg"
                            placeholder="Найти пользователя" value="{{ request('search') }}">
                 </form>
-                </div>
             </div>
         </div>
+    </div>
 
     <div class="row" id="js-contacts">
         @foreach ($users as $user)
@@ -55,14 +55,14 @@
                                         <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
                                     </a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="{{ route('edit', ['id' => $user->id]) }}"><i
+                                        <a class="dropdown-item" href="{{ route('users.edit', $user) }}"><i
                                                 class="fa fa-edit"></i> Редактировать</a>
                                         <a class="dropdown-item" href="{{ route('security', ['id' => $user->id]) }}"><i
                                                 class="fa fa-lock"></i> Безопасность</a>
                                         <a class="dropdown-item" href="{{ route('status', ['id' => $user->id]) }}"><i
                                                 class="fa fa-sun"></i> Установить статус</a>
                                         <a class="dropdown-item"
-                                           href="{{ route('upload.avatar.form', ['id' => $user->id]) }}">
+                                           href="{{ route('upload.avatar.form', $user) }}">
                                             <i class="fa fa-camera"></i> Загрузить аватар
                                         </a>
                                         <form action="{{ route('users.destroy', $user) }}" method="POST"

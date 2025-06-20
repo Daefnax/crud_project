@@ -42,12 +42,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/security/{id?}', [SecurityController::class, 'show'])->name('security');
     Route::post('/security', [UpdateSecurityController::class, 'update'])->name('security.update');
 
-    Route::get('/upload_avatar{id?}', [UploadAvatarController::class, 'showForm'])->name('upload.avatar.form');
-    Route::post('/upload_avatar{id?}', [UploadAvatarController::class, 'upload'])
+    Route::get('/users/{user?}/avatar', [UploadAvatarController::class, 'showForm'])->name('upload.avatar.form');
+    Route::post('/users/{user?}/avatar', [UploadAvatarController::class, 'upload'])
         ->name('upload.avatar');
 
-    Route::get('/edit_user/{id}', [EditUserController::class, 'show'])->name('edit');
-    Route::post('/update_user/{id}', [UpdateUserController::class, 'update'])->name('update');
+    Route::get('/users/{user}/edit', [EditUserController::class, 'show'])->name('users.edit');
+    Route::put('users/{user}', [UpdateUserController::class, 'update'])->name('users.update');
 
     Route::delete('/users/{user}', [DeleteUserController::class, 'destroy'])->name('users.destroy');
 

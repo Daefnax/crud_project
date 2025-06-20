@@ -3,20 +3,18 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Services\UserService;
+use Illuminate\View\View;
 
 class EditUserController extends Controller
 {
-    public function __construct(private UserService $userService)
+    public function show(User $user): View
     {
-    }
-
-    public function show($id)
-    {
-        $user = $this->userService->getUserById($id, ['information']);
-
         $this->authorize('update', $user);
 
-        return view('edit_user', compact('user'));
+        $user->load('information');
+
+        return view('users.edit', compact('user'));
     }
 }

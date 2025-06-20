@@ -4,24 +4,19 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UploadAvatarRequest;
-use App\Services\UserService;
+use App\Models\User;
 use App\Services\AvatarService;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class UploadAvatarController extends Controller
 {
-    public function __construct(
-        private UserService   $userService,
-        private AvatarService $avatarService
-    )
+    public function __construct(private AvatarService $avatarService)
     {
     }
 
-    public function showForm(int $id = null)
+    public function showForm(?User $user = null): View
     {
-        $user = $this->userService->getUserById($id ?? auth()->id());
-
         $this->authorize('update', $user);
 
         $avatarUrl = $this->avatarService->getAvatarUrl($user);
@@ -29,10 +24,8 @@ class UploadAvatarController extends Controller
         return view('users.avatar', compact('avatarUrl', 'user'));
     }
 
-    public function upload(UploadAvatarRequest $request, int $id = null)
+    public function upload(UploadAvatarRequest $request, ?User $user = null): RedirectResponse
     {
-        $user = $this->userService->getUserById($id ?? auth()->id());
-
         $this->authorize('update', $user);
 
         try {
