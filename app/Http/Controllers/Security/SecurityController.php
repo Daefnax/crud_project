@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Security;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -15,18 +15,10 @@ class SecurityController extends Controller
 
     public function show(?int $id = null)
     {
-        $targetUser = Auth::user();
+        $user = $id ? $this->userService->getUserById($id) : auth()->user();
 
-        if (!($targetUser instanceof User)) {
-            abort(403);
-        }
+        $this->authorize('update', $user); // Policy проверка
 
-        $user = $id ? $this->userService->getUserById($id) : $targetUser;
-
-        if (!$this->userService->canEdit($targetUser, $user)) {
-            abort(403, 'Доступ к настройкам аккаунта запрещён.');
-        }
-
-        return view('security', ['targetUser' => $user]);
+        return view('users.security', ['targetUser' => $user]);
     }
 }

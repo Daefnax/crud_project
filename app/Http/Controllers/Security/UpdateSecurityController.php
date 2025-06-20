@@ -17,22 +17,14 @@ class UpdateSecurityController extends Controller
 
     public function update(UpdateSecurityRequest $request)
     {
-        $authUser = Auth::user();
+        $userId = $request->input('user_id', auth()->id());
+        $user = $this->userService->getUserById($userId);
 
-        if (!($authUser instanceof User)) {
-            abort(403);
-        }
+        $this->authorize('update', $user);
 
-        $targetId = $request->input('user_id', $authUser->id);
-        $targetUser = $this->userService->getUserById($targetId);
+        $this->userService->updateSecurity($user, $request->validated());
 
-        if (!$this->userService->canEdit($authUser, $targetUser)) {
-            abort(403, 'Вы не можете изменить email или пароль другого пользователя.');
-        }
-
-        $this->userService->updateSecurity($targetUser, $request->validated());
-
-        return Redirect::route('security', ['id' => $targetUser->id])
+        return redirect()->route('security', ['id' => $user->id])
             ->with('success', 'Email и пароль успешно обновлены.');
     }
 }

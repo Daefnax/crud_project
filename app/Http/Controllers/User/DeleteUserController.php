@@ -16,29 +16,20 @@ class DeleteUserController extends Controller
 
     public function destroy(int $id)
     {
-        $currentUser = Auth::user();
+        $user = $this->userService->getUserById($id);
 
-        try {
-            $user = $this->userService->getUserById($id);
+        $this->authorize('delete', $user); // проверка прав через policy
 
-            if ($currentUser->id !== $user->id && !$currentUser->can('admin')) {
-                abort(403, 'У вас нет прав на удаление этого пользователя');
-            }
+        $isSelf = auth()->id() === $user->id;
 
-            $isSelfDelete = $currentUser->id === $user->id;
+        $this->userService->deleteUser($user);
 
-            $this->userService->deleteUser($user);
-
-            if ($isSelfDelete) {
-                Auth::logout();
-                return Redirect::to('login')->with('success', 'Ваш профиль успешно удален.');
-            }
-
-            return Redirect::route('users')->with('success', 'Пользователь успешно удален.');
-        } catch (HttpException $e) {
-            throw $e;
-        } catch (\Throwable $e) {
-            return Redirect::back()->withErrors(['error' => 'Ошибка при удалении пользователя.']);
+        if ($isSelf) {
+            auth()->logout();
+            return redirect()->route('login')->with('success', 'Ваш профиль успешно удалён.');
         }
+
+        return redirect()->route('users')->with('success', 'Пользователь успешно удалён.');
     }
+
 }

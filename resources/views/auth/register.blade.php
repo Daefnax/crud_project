@@ -58,13 +58,19 @@
                         </div>
                         <div class="col-xl-6 ml-auto mr-auto">
                             <div class="card p-4 rounded-plus bg-faded">
+
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+
                                 <form id="js-login" novalidate="" method="POST" action="{{ route('register.post') }}">
                                 @csrf
-                                    @if (session('success'))
-                                        <div class="alert alert-success">{{ session('success') }}</div>
-                                    @elseif (session('danger'))
-                                        <div class="alert alert-danger">{{ session('danger') }}</div>
-                                    @endif
 
                                     <div class="form-group">
                                         <label class="form-label" for="email">Email</label>

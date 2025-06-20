@@ -16,9 +16,13 @@ class UpdateUserController extends Controller
 
     public function update(UpdateUserRequest $request, int $id)
     {
-            $user = $this->userService->getUserById($id);
-            $this->userService->updateInfo($user, $request->validated());
-            return redirect()->route('users')->with('success', 'Данные успешно обновлены.');
+        $user = $this->userService->getUserById($id);
+
+        $this->authorize('update', $user);
+
+        $this->userService->updateInfo($user, $request->validated());
+
+        return redirect()->route('users')->with('success', 'Данные успешно обновлены.');
 
     }
 }

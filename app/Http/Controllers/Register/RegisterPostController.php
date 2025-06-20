@@ -9,11 +9,9 @@ use Illuminate\Auth\Events\Registered;
 
 class RegisterPostController extends Controller
 {
-    protected RegisterService $registerService;
 
-    public function __construct(RegisterService $registerService)
+    public function __construct(private RegisterService $registerService)
     {
-        $this->registerService = $registerService;
     }
 
     public function store(RegisterRequest $request)
@@ -24,8 +22,14 @@ class RegisterPostController extends Controller
             event(new Registered($user));
 
             return redirect()->route('login')->with('success', 'Вы зарегистрированы!');
-        } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Ошибка регистрации']);
+        } catch (\Throwable $e) {
+            report($e); // логирует в laravel.log
+
+            return back()->withErrors([
+                'error' => config('app.debug')
+                    ? $e->getMessage()
+                    : 'Ошибка регистрации. Попробуйте позже.',
+            ])->withInput();
         }
     }
 }

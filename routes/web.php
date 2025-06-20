@@ -13,7 +13,7 @@ use App\Http\Controllers\User\CreateUserPostController;
 use App\Http\Controllers\User\DeleteUserController;
 use App\Http\Controllers\User\EditUserController;
 use App\Http\Controllers\User\ProfileController;
-use App\Http\Controllers\User\SecurityController;
+use App\Http\Controllers\Security\SecurityController;
 use App\Http\Controllers\User\UpdateUserController;
 use App\Http\Controllers\User\UploadAvatarController;
 use App\Http\Controllers\User\UsersController;
@@ -46,6 +46,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/upload_avatar{id?}', [UploadAvatarController::class, 'upload'])
         ->name('upload.avatar');
 
+    Route::get('/edit_user/{id}', [EditUserController::class, 'show'])->name('edit');
+    Route::post('/update_user/{id}', [UpdateUserController::class, 'update'])->name('update');
+
     Route::delete('/users/{id}', [DeleteUserController::class, 'destroy'])->name('users.destroy');
 
     Route::middleware(['can:admin'])->group(function () {
@@ -53,8 +56,5 @@ Route::middleware('auth')->group(function () {
         Route::get('/create_user', [CreateUserFormController::class, 'create'])->name('user.create');
         Route::post('/create_user', [CreateUserPostController::class, 'store'])->name('user.store');
 
-
-        Route::get('/edit_user/{id}', [EditUserController::class, 'show'])->name('edit');
-        Route::post('/update_user/{id}', [UpdateUserController::class, 'update'])->name('update');
     });
 });

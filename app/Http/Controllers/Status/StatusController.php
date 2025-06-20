@@ -15,16 +15,13 @@ class StatusController extends Controller
 
     public function show(Request $request, ?int $id = null)
     {
-        $targetId = $id ?? Auth::id();
-        $user = $this->userService->getUserById($targetId);
+        $user = $this->userService->getUserById($id ?? auth()->id());
 
-        if ($user->id !== Auth::id() && !Auth::user()->can('admin')) {
-            abort(403);
-        }
+        $this->authorize('view', $user);
 
         $current_status = $user->media->status ?? '';
 
-        return view('status', [
+        return view('users.status', [
             'targetUser' => $user,
             'current_status' => $current_status,
         ]);

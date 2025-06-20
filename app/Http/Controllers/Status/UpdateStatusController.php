@@ -17,23 +17,13 @@ class UpdateStatusController extends Controller
 
     public function update(UpdateStatusRequest $request)
     {
-        $targetId = $request->input('user_id', Auth::id());
+        $user = $this->userService->getUserById($request->input('user_id', auth()->id()));
 
-        $targetUser = $this->userService->getUserById($targetId);
+        $this->authorize('update', $user);
 
-        $authUser = Auth::user();
+        $this->userService->updateStatus($user, $request->input('status'));
 
-        if (!($authUser instanceof User)) {
-            abort(403, 'Неверный тип пользователя');
-        }
-
-        if (!$this->userService->canEdit($authUser, $targetUser)) {
-            abort(403, 'У вас нет прав на изменение статуса.');
-        }
-
-        $this->userService->updateStatus($targetUser, $request->input('status'));
-
-        return Redirect::route('status', ['id' => $targetId])
+        return redirect()->route('status', ['id' => $user->id])
             ->with('success', 'Статус успешно обновлён.');
     }
 }

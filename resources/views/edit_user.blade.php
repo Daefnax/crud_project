@@ -2,14 +2,6 @@
 
 @section('content')
 
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            @foreach ($errors->all() as $error)
-                <div>{{ $error }}</div>
-            @endforeach
-        </div>
-    @endif
-
     <div class="subheader">
         <h1 class="subheader-title">
             <i class="subheader-icon fal fa-plus-circle"></i> Редактировать пользователя
@@ -70,7 +62,9 @@
                             </div>
 
                             <div class="col-md-12 mt-3 d-flex flex-row-reverse">
-                                <button type="submit" class="btn btn-warning">Редактировать</button>
+                                @can('update', $user)
+                                    <button type="submit" class="btn btn-warning">Редактировать</button>
+                                @endcan
                             </div>
                         </div>
                     </div>

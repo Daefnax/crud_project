@@ -44,7 +44,7 @@ class CreateUserTest extends TestCase
 
         $this->get('/create_user')
             ->assertOk()
-            ->assertViewIs('create_user');
+            ->assertViewIs('users.create');
     }
 
     #[Test]

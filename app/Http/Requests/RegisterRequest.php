@@ -30,8 +30,13 @@ class RegisterRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.required' => 'Email обязательно.',
-            'password.required' => 'Пароль обязательно.'
+            'email.required' => 'Поле Email обязательно.',
+            'email.email' => 'Введите корректный Email.',
+            'email.max' => 'Email не должен превышать 255 символов.',
+            'email.unique' => 'Такой Email уже зарегистрирован.',
+
+            'password.required' => 'Поле Пароль обязательно.',
+            'password.min' => 'Пароль должен быть не менее :min символов.',
         ];
     }
 }

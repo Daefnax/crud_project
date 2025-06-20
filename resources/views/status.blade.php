@@ -11,16 +11,6 @@
 <form method="POST" action="{{ route('update.status') }}">
     @csrf
 
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     @if(auth()->user()->can('admin'))
         <input type="hidden" name="user_id" value="{{ $targetUser->id }}">
     @endif

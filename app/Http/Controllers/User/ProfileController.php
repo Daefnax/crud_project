@@ -19,7 +19,9 @@ class ProfileController extends Controller
 
         $user = $this->profileService->getUserById($userId);
 
-        return view('profile', ['user' => $user]);
+        $this->authorize('view', $user);
+
+        return view('users.profile', ['user' => $user]);
     }
 
 }

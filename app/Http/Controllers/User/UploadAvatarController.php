@@ -20,32 +20,29 @@ class UploadAvatarController extends Controller
 
     public function showForm(int $id = null)
     {
-        $user = $this->userService->getUserById($id ?? Auth::id());
+        $user = $this->userService->getUserById($id ?? auth()->id());
 
-        if (!$this->userService->canEdit(Auth::user(), $user)) {
-            abort(403);
-        }
+        $this->authorize('update', $user);
 
         $avatarUrl = $this->avatarService->getAvatarUrl($user);
 
-        return view('upload_avatar', compact('avatarUrl', 'user'));
+        return view('users.avatar', compact('avatarUrl', 'user'));
     }
 
     public function upload(UploadAvatarRequest $request, int $id = null)
     {
-        $user = $this->userService->getUserById($id ?? Auth::id());
+        $user = $this->userService->getUserById($id ?? auth()->id());
 
-        if (!$this->userService->canEdit(Auth::user(), $user)) {
-            abort(403);
-        }
+        $this->authorize('update', $user);
 
         try {
             $this->avatarService->upload($user, $request->file('image'));
 
-            return Redirect::route('upload.avatar.form', ['id' => $user->id])
+            return redirect()->route('upload.avatar.form', ['id' => $user->id])
                 ->with('success', 'Аватар успешно загружен.');
         } catch (\Throwable $e) {
-            return Redirect::back()->withErrors(['error' => 'Ошибка загрузки: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => 'Ошибка загрузки: ' . $e->getMessage()]);
         }
     }
+
 }
