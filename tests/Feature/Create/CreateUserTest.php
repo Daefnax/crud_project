@@ -30,7 +30,7 @@ class CreateUserTest extends TestCase
     #[Test]
     public function regular_user_cannot_access_create_user_form(): void
     {
-        $user = User::factory()->create(['role' => 'user']);
+        $user = User::factory()->create(['role' => 'users']);
         $this->actingAs($user);
 
         $this->get('/create_user')->assertForbidden();
@@ -66,7 +66,7 @@ class CreateUserTest extends TestCase
             'telegram' => 'https://t.me/test',
             'instagram' => 'https://instagram.com/test',
             'status' => 'online',
-            'role' => 'user',
+            'role' => 'users',
             'image' => $file,
         ]);
 
@@ -137,6 +137,6 @@ class CreateUserTest extends TestCase
         ])->assertRedirect(route('users'));
 
         $user = User::where('email', 'default@example.com')->first();
-        $this->assertEquals('user', $user->role);
+        $this->assertEquals('users', $user->role);
     }
 }

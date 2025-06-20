@@ -21,7 +21,7 @@ class ProfileController extends Controller
 
         $this->authorize('view', $user);
 
-        return view('users.profile', ['user' => $user]);
+        return view('users.profile', ['users' => $user]);
     }
 
 }

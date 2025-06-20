@@ -18,7 +18,7 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary bg-primary-gradient">
-    <a class="navbar-brand d-flex align-items-center fw-500" href="{{ route('users') }}">
+    <a class="navbar-brand d-flex align-items-center fw-500" href="{{ route('users.index') }}">
         <img alt="logo" class="d-inline-block align-top mr-2" src="{{ asset('img/logo.png') }}"> Учебный проект
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Переключить навигацию">
@@ -49,23 +49,17 @@
 </nav>
 
 <main id="js-page-content" role="main" class="page-content mt-3">
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-    @if (session('danger'))
-        <div class="alert alert-danger">{{ session('danger') }}</div>
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            @foreach ($errors->all() as $error)
+                <div>{{ $error }}</div>
+            @endforeach
+        </div>
     @endif
 
     @yield('content')
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                @foreach ($errors->all() as $error)
-                    <div>{{ $error }}</div>
-                @endforeach
-            </div>
-        @endif
+
 </main>
 
 <footer class="page-footer" role="contentinfo">

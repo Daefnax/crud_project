@@ -32,7 +32,7 @@ Route::post('logout', [LogoutController::class, 'destroy'])->name('logout')
 Route::redirect('/', '/users');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/users', [UsersController::class, 'index'])->name('users');
+    Route::get('/users', [UsersController::class, 'index'])->name('users.index');
 
     Route::get('/profile/{id?}', [ProfileController::class, 'show'])->name('profile');
 
@@ -53,8 +53,8 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware(['can:admin'])->group(function () {
 
-        Route::get('/create_user', [CreateUserFormController::class, 'create'])->name('user.create');
-        Route::post('/create_user', [CreateUserPostController::class, 'store'])->name('user.store');
+        Route::get('/create_user', [CreateUserFormController::class, 'create'])->name('users.create');
+        Route::post('/create_user', [CreateUserPostController::class, 'store'])->name('users.store');
 
     });
 });

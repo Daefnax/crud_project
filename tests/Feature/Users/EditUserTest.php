@@ -23,7 +23,7 @@ class EditUserTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertViewIs('edit_user');
-        $response->assertViewHas('user', $user);
+        $response->assertViewHas('users', $user);
     }
 
     #[Test]

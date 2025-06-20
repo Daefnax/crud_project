@@ -16,6 +16,6 @@ class UsersController extends Controller
         $users = $this->userService->getAllUsers($request->search);
         $isAdmin = Auth::user()?->can('admin');
 
-        return view('users', compact('users', 'isAdmin'));
+        return view('users.index', compact('users', 'isAdmin'));
     }
 }

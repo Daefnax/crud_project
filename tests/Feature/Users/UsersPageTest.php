@@ -27,7 +27,7 @@ class UsersPageTest extends TestCase
     public function only_admin_sees_add_button(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
-        $nonAdmin = User::factory()->create(['role' => 'user']);
+        $nonAdmin = User::factory()->create(['role' => 'users']);
 
         $this->actingAs($admin);
         $this->get('/users')->assertSee('Добавить');

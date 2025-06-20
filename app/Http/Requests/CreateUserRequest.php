@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class CreateUserRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determine if the users is authorized to make this request.
      */
     public function authorize(): bool
     {
@@ -32,7 +32,7 @@ class CreateUserRequest extends FormRequest
             'telegram' => 'nullable|url',
             'instagram' => 'nullable|url',
             'status' => 'nullable|in:online,away,do_not_disturb',
-            'role' => 'nullable|in:user,admin',
+            'role' => 'nullable|in:users,admin',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ];
     }

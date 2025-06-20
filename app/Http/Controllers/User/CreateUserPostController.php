@@ -5,24 +5,21 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateUserRequest;
 use App\Services\CreateUserService;
-use Illuminate\Http\RedirectResponse;
 
 class CreateUserPostController extends Controller
 {
-    public function __construct(private CreateUserService $createUserService)
-    {
-    }
-
-    public function store(CreateUserRequest $request): RedirectResponse
+    public function store(CreateUserRequest $request, CreateUserService $service)
     {
         try {
-            $this->createUserService->createUser($request->validated());
+            $validated = $request->validated();
 
-            return redirect()->route('users')->with('success', 'Пользователь успешно добавлен.');
+            $service->createUser($validated);
+
+            return redirect()->route('users.index');
         } catch (\Throwable $e) {
-            return redirect()->back()
-                ->withInput()
-                ->withErrors(['error' => 'Ошибка при создании пользователя: ' . $e->getMessage()]);
+            report($e);
+
+            return back()->withErrors(['error' => 'Что-то пошло не так: ' . $e->getMessage()]);
         }
     }
 }

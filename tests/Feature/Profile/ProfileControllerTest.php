@@ -28,7 +28,7 @@ class ProfileControllerTest extends TestCase
         $response = $this->get('/profile');
 
         $response->assertOk();
-        $response->assertViewHas('user');
+        $response->assertViewHas('users');
         $response->assertSee($user->email);
         $response->assertSeeText($user->information->username ?? '');
     }
@@ -89,7 +89,7 @@ class ProfileControllerTest extends TestCase
         $response = $this->get("/profile/{$anotherUser->id}");
 
         $response->assertOk();
-        $response->assertViewHas('user', $anotherUser);
+        $response->assertViewHas('users', $anotherUser);
     }
 
     #[Test]

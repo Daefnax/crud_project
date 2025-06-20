@@ -19,7 +19,7 @@ class CreateUserService
             $user = User::create([
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
-                'role' => $data['role'] ?? 'user',
+                'role' => $data['role'] ?? 'users',
             ]);
 
             $user->information()->create([
@@ -42,6 +42,7 @@ class CreateUserService
 
             if (!empty($data['image']) && $data['image'] instanceof UploadedFile) {
                 $this->avatarService->upload($user, $data['image']);
+                unset($data['image']);
             }
 
             return $user;

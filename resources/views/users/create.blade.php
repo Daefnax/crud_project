@@ -8,7 +8,7 @@
         </h1>
     </div>
 
-    <form method="POST" action="{{ route('user.store') }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('users.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-xl-6">
