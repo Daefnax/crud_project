@@ -49,7 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/edit_user/{id}', [EditUserController::class, 'show'])->name('edit');
     Route::post('/update_user/{id}', [UpdateUserController::class, 'update'])->name('update');
 
-    Route::delete('/users/{id}', [DeleteUserController::class, 'destroy'])->name('users.destroy');
+    Route::delete('/users/{user}', [DeleteUserController::class, 'destroy'])->name('users.destroy');
 
     Route::middleware(['can:admin'])->group(function () {
 

@@ -3,33 +3,32 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Services\UserService;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class DeleteUserController extends Controller
 {
-    public function __construct(private UserService $userService)
+    public function __construct(private UserService $service)
     {
     }
 
-    public function destroy(int $id)
+    public function destroy(User $user)
     {
-        $user = $this->userService->getUserById($id);
-
-        $this->authorize('delete', $user); // проверка прав через policy
+        $this->authorize('delete', $user);
 
         $isSelf = auth()->id() === $user->id;
 
-        $this->userService->deleteUser($user);
+        $deleted = $this->service->deleteUser($user);
+
+        if (!$deleted) {
+            return back()->with('error', 'Не удалось удалить пользователя.');
+        }
 
         if ($isSelf) {
             auth()->logout();
             return redirect()->route('login')->with('success', 'Ваш профиль успешно удалён.');
         }
 
-        return redirect()->route('users')->with('success', 'Пользователь успешно удалён.');
+        return redirect()->route('users.index')->with('success', 'Пользователь успешно удалён.');
     }
-
 }

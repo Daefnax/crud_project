@@ -25,7 +25,7 @@ class LoginPostController extends Controller
 
         $this->sessionService->regenerateSession($request);
 
-        return redirect()->route('users')->with('success', 'Вы вошли.');
+        return redirect()->route('users.index')->with('success', 'Вы вошли.');
 
     }
 }

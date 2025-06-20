@@ -11,6 +11,7 @@ class UserService
     public function getAllUsers(?string $search = null): Collection
     {
         return User::with('information')
+            ->whereNull('deleted_at')
             ->when($search, function ($query) use ($search) {
                 $query->whereHas('information', function ($q) use ($search) {
                     $q->where('username', 'like', '%' . $search . '%');
@@ -26,7 +27,11 @@ class UserService
 
     public function deleteUser(User $user): bool
     {
-        return $user->delete();
+        if (auth()->id() === $user->id) {
+            return (bool) $user->forceDelete();
+        }
+
+        return (bool) $user->delete();
     }
 
     public function updateSecurity(User $user, array $data): void

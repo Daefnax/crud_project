@@ -65,7 +65,7 @@
                                            href="{{ route('upload.avatar.form', ['id' => $user->id]) }}">
                                             <i class="fa fa-camera"></i> Загрузить аватар
                                         </a>
-                                        <form action="{{ route('users.destroy', ['id' => $user->id]) }}" method="POST"
+                                        <form action="{{ route('users.destroy', $user) }}" method="POST"
                                               onsubmit="return confirm('Удалить пользователя?');">
                                             @csrf
                                             @method('DELETE')
