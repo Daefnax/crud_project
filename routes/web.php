@@ -53,8 +53,8 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware(['can:admin'])->group(function () {
 
-        Route::get('/create_user', [CreateUserFormController::class, 'create'])->name('users.create');
-        Route::post('/create_user', [CreateUserPostController::class, 'store'])->name('users.store');
+        Route::get('/users/create', [CreateUserFormController::class, 'create'])->name('users.create');
+        Route::post('/users/create', [CreateUserPostController::class, 'store'])->name('users.store');
 
     });
 });
