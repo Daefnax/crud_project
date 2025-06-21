@@ -57,7 +57,7 @@
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="{{ route('users.edit', $user) }}"><i
                                                 class="fa fa-edit"></i> Редактировать</a>
-                                        <a class="dropdown-item" href="{{ route('security', ['id' => $user->id]) }}"><i
+                                        <a class="dropdown-item" href="{{ route('users.security', $user) }}"><i
                                                 class="fa fa-lock"></i> Безопасность</a>
                                         <a class="dropdown-item" href="{{ route('status', ['id' => $user->id]) }}"><i
                                                 class="fa fa-sun"></i> Установить статус</a>

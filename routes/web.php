@@ -39,8 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/status/{id?}', [StatusController::class, 'show'])->name('status');
     Route::post('/update_status', [UpdateStatusController::class, 'update'])->name('update.status');
 
-    Route::get('/security/{id?}', [SecurityController::class, 'show'])->name('security');
-    Route::post('/security', [UpdateSecurityController::class, 'update'])->name('update.security');
+    Route::get('/security/{user?}', [SecurityController::class, 'show'])->name('users.security');
+    Route::post('/security', [UpdateSecurityController::class, 'update'])->name('security.update');
 
     Route::get('/users/{user?}/avatar', [UploadAvatarController::class, 'showForm'])->name('upload.avatar.form');
     Route::post('/users/{user?}/avatar', [UploadAvatarController::class, 'upload'])
