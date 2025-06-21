@@ -19,14 +19,14 @@ class UpdateUserTest extends TestCase
 
         $this->actingAs($admin);
 
-        $response = $this->post(route('update', $user->id), [
+        $response = $this->put(route('users.update', $user), [
             'username' => 'Updated Name',
             'job_title' => 'Manager',
             'phone' => '1234567890',
             'address' => 'City Center',
         ]);
 
-        $response->assertRedirect(route('users'));
+        $response->assertRedirect(route('users.index'));
 
         $this->assertDatabaseHas('user_information', [
             'user_id' => $user->id,
@@ -39,7 +39,7 @@ class UpdateUserTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->post(route('update', $user->id), [
+        $response = $this->put(route('users.update', $user), [
             'username' => 'Hack Attempt',
         ]);
 
