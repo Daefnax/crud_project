@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Profile;
+namespace Tests\Feature\Users;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,7 +15,7 @@ class ProfileControllerTest extends TestCase
     #[Test]
     public function guest_cannot_access_profile_page(): void
     {
-        $response = $this->get('/profile');
+        $response = $this->get('users.profile');
         $response->assertRedirect(route('login'));
     }
 
@@ -25,7 +25,7 @@ class ProfileControllerTest extends TestCase
         $user = User::factory()->hasInformation()->create();
         $this->actingAs($user);
 
-        $response = $this->get('/profile');
+        $response = $this->get('users.profile');
 
         $response->assertOk();
         $response->assertViewHas('users');
@@ -40,11 +40,11 @@ class ProfileControllerTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->get('/profile');
+        $response = $this->get('users.profile');
         $response->assertSee('avatar-m.png');
 
         $user->media()->create(['image' => 'avatar.jpg']);
-        $response = $this->get('/profile');
+        $response = $this->get('users.profile');
         $response->assertSee('uploads/avatar.jpg');
     }
 
@@ -59,7 +59,7 @@ class ProfileControllerTest extends TestCase
         ]);
         $this->actingAs($user);
 
-        $response = $this->get('/profile');
+        $response = $this->get('users.profile');
 
         $response->assertSee('https://vk.com/test');
         $response->assertSee('https://t.me/test');
@@ -72,7 +72,7 @@ class ProfileControllerTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->get('/profile');
+        $response = $this->get('users.profile');
 
         $response->assertDontSee('https://vk.com');
         $response->assertDontSee('https://t.me');
@@ -86,7 +86,7 @@ class ProfileControllerTest extends TestCase
         $anotherUser = User::factory()->create();
         $this->actingAs($owner);
 
-        $response = $this->get("/profile/{$anotherUser->id}");
+        $response = $this->get("users.profile/{$anotherUser->id}");
 
         $response->assertOk();
         $response->assertViewHas('users', $anotherUser);
@@ -98,7 +98,7 @@ class ProfileControllerTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->get('/profile/99999');
+        $response = $this->get('users.profile/99999');
         $response->assertNotFound();
     }
 }

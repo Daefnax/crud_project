@@ -3,25 +3,18 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Services\ProfileService;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
+use App\Models\User;
+use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    public function __construct(private ProfileService $profileService)
+    public function show(User $user): View
     {
-    }
-
-    public function show(?int $id = null)
-    {
-        $userId = $id ?? Auth::id();
-
-        $user = $this->profileService->getUserById($userId);
-
         $this->authorize('view', $user);
 
-        return view('users.profile', ['users' => $user]);
+        $user->load('information', 'socials', 'media');
+
+        return view('users.profile', compact('user'));
     }
 
 }
