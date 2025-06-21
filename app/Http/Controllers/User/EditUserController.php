@@ -4,7 +4,6 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\UserService;
 use Illuminate\View\View;
 
 class EditUserController extends Controller

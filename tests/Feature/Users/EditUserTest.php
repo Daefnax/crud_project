@@ -19,11 +19,11 @@ class EditUserTest extends TestCase
 
         $this->actingAs($admin);
 
-        $response = $this->get(route('edit', ['id' => $user->id]));
+        $response = $this->get(route('users.edit', $user));
 
         $response->assertStatus(200);
-        $response->assertViewIs('edit_user');
-        $response->assertViewHas('users', $user);
+        $response->assertViewIs('users.edit');
+        $response->assertViewHas('user', $user);
     }
 
     #[Test]
@@ -34,7 +34,7 @@ class EditUserTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->get(route('edit', ['id' => $otherUser->id]));
+        $response = $this->get(route('users.edit', $otherUser));
 
         $response->assertStatus(403);
     }
