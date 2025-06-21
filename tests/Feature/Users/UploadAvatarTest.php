@@ -36,11 +36,11 @@ class UploadAvatarTest extends TestCase
 
         $file = UploadedFile::fake()->image('avatar.png');
 
-        $response = $this->post(route('upload.avatar', ['id' => $user->id]), [
+        $response = $this->post(route('upload.avatar', $user), [
             'image' => $file,
         ]);
 
-        $response->assertRedirect(route('upload.avatar.form', ['id' => $user->id]));
+        $response->assertRedirect(route('users.profile', $user));
         $this->assertDatabaseHas('user_media', ['user_id' => $user->id]);
     }
 
@@ -53,7 +53,7 @@ class UploadAvatarTest extends TestCase
         $this->actingAs($user);
         $file = UploadedFile::fake()->image('avatar.png');
 
-        $response = $this->post(route('upload.avatar', ['id' => $other->id]), [
+        $response = $this->post(route('upload.avatar', $other), [
             'image' => $file,
         ]);
 
