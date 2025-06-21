@@ -13,18 +13,32 @@ class UpdateSecurityTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
+    public function guest_cannot_update_security(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->post(route('update.security'), [
+            'user_id' => $user->id,
+            'email' => 'hacker@example.com',
+            'password' => 'password',
+        ]);
+
+        $response->assertRedirect(route('login'));
+    }
+
+    #[Test]
     public function user_can_update_own_security(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->post(route('security.update'), [
-            'email' => 'new'.$user->id.'@example.com',
+        $response = $this->post(route('update.security'), [
+            'email' => 'new' . $user->id . '@example.com',
             'password' => 'newpassword123',
         ]);
 
         $response->assertRedirect(route('security', ['id' => $user->id]));
-        $this->assertDatabaseHas('users', ['id' => $user->id, 'email' => 'new'.$user->id.'@example.com']);
+        $this->assertDatabaseHas('users', ['id' => $user->id, 'email' => 'new' . $user->id . '@example.com']);
         $this->assertTrue(Hash::check('newpassword123', $user->fresh()->password));
     }
 
@@ -35,14 +49,14 @@ class UpdateSecurityTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($admin);
 
-        $response = $this->post(route('security.update'), [
+        $response = $this->post(route('update.security'), [
             'user_id' => $user->id,
-            'email' => 'other'.$user->id.'@example.com',
+            'email' => 'other' . $user->id . '@example.com',
             'password' => 'securepass456',
         ]);
 
         $response->assertRedirect(route('security', ['id' => $user->id]));
-        $this->assertDatabaseHas('users', ['id' => $user->id, 'email' => 'other'.$user->id.'@example.com']);
+        $this->assertDatabaseHas('users', ['id' => $user->id, 'email' => 'other' . $user->id . '@example.com']);
         $this->assertTrue(Hash::check('securepass456', $user->fresh()->password));
     }
 
@@ -53,7 +67,7 @@ class UpdateSecurityTest extends TestCase
         $otherUser = User::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->post(route('security.update'), [
+        $response = $this->post(route('update.security'), [
             'user_id' => $otherUser->id,
             'email' => 'unauthorized@example.com',
             'password' => 'unauthpass1',
@@ -68,7 +82,7 @@ class UpdateSecurityTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->post(route('security.update'), [
+        $response = $this->post(route('update.security'), [
             'email' => 'not-an-email',
             'password' => 'short',
         ]);

@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/update_status', [UpdateStatusController::class, 'update'])->name('update.status');
 
     Route::get('/security/{id?}', [SecurityController::class, 'show'])->name('security');
-    Route::post('/security', [UpdateSecurityController::class, 'update'])->name('security.update');
+    Route::post('/security', [UpdateSecurityController::class, 'update'])->name('update.security');
 
     Route::get('/users/{user?}/avatar', [UploadAvatarController::class, 'showForm'])->name('upload.avatar.form');
     Route::post('/users/{user?}/avatar', [UploadAvatarController::class, 'upload'])

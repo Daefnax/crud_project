@@ -15,7 +15,9 @@ class ProfileControllerTest extends TestCase
     #[Test]
     public function guest_cannot_access_profile_page(): void
     {
-        $response = $this->get('users.profile');
+        $user = User::factory()->create();
+
+        $response = $this->get(route('users.profile', $user));
         $response->assertRedirect(route('login'));
     }
 
@@ -25,10 +27,10 @@ class ProfileControllerTest extends TestCase
         $user = User::factory()->hasInformation()->create();
         $this->actingAs($user);
 
-        $response = $this->get('users.profile');
+        $response = $this->get(route('users.profile', $user));
 
         $response->assertOk();
-        $response->assertViewHas('users');
+        $response->assertViewHas('user');
         $response->assertSee($user->email);
         $response->assertSeeText($user->information->username ?? '');
     }
@@ -40,11 +42,11 @@ class ProfileControllerTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->get('users.profile');
+        $response = $this->get(route('users.profile', $user));
         $response->assertSee('avatar-m.png');
 
         $user->media()->create(['image' => 'avatar.jpg']);
-        $response = $this->get('users.profile');
+        $response = $this->get(route('users.profile', $user));
         $response->assertSee('uploads/avatar.jpg');
     }
 
@@ -59,7 +61,7 @@ class ProfileControllerTest extends TestCase
         ]);
         $this->actingAs($user);
 
-        $response = $this->get('users.profile');
+        $response = $this->get(route('users.profile', $user));
 
         $response->assertSee('https://vk.com/test');
         $response->assertSee('https://t.me/test');
@@ -72,7 +74,7 @@ class ProfileControllerTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->get('users.profile');
+        $response = $this->get(route('users.profile', $user));
 
         $response->assertDontSee('https://vk.com');
         $response->assertDontSee('https://t.me');
@@ -86,10 +88,10 @@ class ProfileControllerTest extends TestCase
         $anotherUser = User::factory()->create();
         $this->actingAs($owner);
 
-        $response = $this->get("users.profile/{$anotherUser->id}");
+        $response = $this->get(route('users.profile', $anotherUser));
 
         $response->assertOk();
-        $response->assertViewHas('users', $anotherUser);
+        $response->assertViewHas('user', $anotherUser);
     }
 
     #[Test]
@@ -98,7 +100,7 @@ class ProfileControllerTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->get('users.profile/99999');
+        $response = $this->get(route('users.profile',['user' => 99999]));
         $response->assertNotFound();
     }
 }
