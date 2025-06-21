@@ -4,10 +4,7 @@ namespace App\Http\Controllers\Security;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateSecurityRequest;
-use App\Models\User;
 use App\Services\UserService;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 
 class UpdateSecurityController extends Controller
 {
@@ -24,7 +21,8 @@ class UpdateSecurityController extends Controller
 
         $this->userService->updateSecurity($user, $request->validated());
 
-        return redirect()->route('security', ['id' => $user->id])
+        return redirect()
+            ->route('users.security', ['user' => $user->id])
             ->with('success', 'Email и пароль успешно обновлены.');
     }
 }

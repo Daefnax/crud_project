@@ -19,7 +19,6 @@ use App\Http\Controllers\User\UploadAvatarController;
 use App\Http\Controllers\User\UsersController;
 use Illuminate\Support\Facades\Route;
 
-
 Route::get('register', [RegisterFormController::class, 'create'])->name('register');
 Route::post('register', [RegisterPostController::class, 'store'])->name('register.post');
 
@@ -29,32 +28,28 @@ Route::post('login', [LoginPostController::class, 'store'])
     ->middleware('throttle:10,1');
 Route::post('logout', [LogoutController::class, 'destroy'])->name('logout')
     ->middleware('auth');
+
 Route::redirect('/', '/users');
 
 Route::middleware('auth')->group(function () {
+    Route::middleware(['can:admin'])->group(function () {
+        Route::get('/users/create', [CreateUserFormController::class, 'create'])->name('users.create');
+        Route::post('/users/create', [CreateUserPostController::class, 'store'])->name('users.store');
+    });
+
     Route::get('/users', [UsersController::class, 'index'])->name('users.index');
 
-    Route::get('/users/{user}', [ProfileController::class, 'show'])->name('users.profile');
+    Route::get('/users/{user?}/security', [SecurityController::class, 'show'])->name('users.security');
+    Route::post('/security', [UpdateSecurityController::class, 'update'])->name('security.update');
+
+    Route::get('/users/{user?}/avatar', [UploadAvatarController::class, 'showForm'])->name('upload.avatar.form');
+    Route::post('/users/{user?}/avatar', [UploadAvatarController::class, 'upload'])->name('upload.avatar');
 
     Route::get('/status/{id?}', [StatusController::class, 'show'])->name('status');
     Route::post('/update_status', [UpdateStatusController::class, 'update'])->name('update.status');
 
-    Route::get('/security/{user?}', [SecurityController::class, 'show'])->name('users.security');
-    Route::post('/security', [UpdateSecurityController::class, 'update'])->name('security.update');
-
-    Route::get('/users/{user?}/avatar', [UploadAvatarController::class, 'showForm'])->name('upload.avatar.form');
-    Route::post('/users/{user?}/avatar', [UploadAvatarController::class, 'upload'])
-        ->name('upload.avatar');
-
+    Route::get('/users/{user}', [ProfileController::class, 'show'])->name('users.profile');
     Route::get('/users/{user}/edit', [EditUserController::class, 'show'])->name('users.edit');
-    Route::put('users/{user}', [UpdateUserController::class, 'update'])->name('users.update');
-
+    Route::put('/users/{user}', [UpdateUserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [DeleteUserController::class, 'destroy'])->name('users.destroy');
-
-    Route::middleware(['can:admin'])->group(function () {
-
-        Route::get('/users/create', [CreateUserFormController::class, 'create'])->name('users.create');
-        Route::post('/users/create', [CreateUserPostController::class, 'store'])->name('users.store');
-
-    });
 });
