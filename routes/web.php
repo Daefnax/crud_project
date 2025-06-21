@@ -34,7 +34,7 @@ Route::redirect('/', '/users');
 Route::middleware('auth')->group(function () {
     Route::get('/users', [UsersController::class, 'index'])->name('users.index');
 
-    Route::get('/profile/{id?}', [ProfileController::class, 'show'])->name('profile');
+    Route::get('/profile/{id?}', [ProfileController::class, 'show'])->name('users.profile');
 
     Route::get('/status/{id?}', [StatusController::class, 'show'])->name('status');
     Route::post('/update_status', [UpdateStatusController::class, 'update'])->name('update.status');

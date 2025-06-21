@@ -40,7 +40,7 @@
                                 };
                             @endphp
                             <span class="status status-{{ $color }} mr-3">
-                        <a href="{{ route('profile', ['id' => $user->id]) }}">
+                        <a href="{{ route('users.profile', ['id' => $user->id]) }}">
                             <span class="rounded-circle profile-image d-block"
                                   style="background-image:url('{{ !empty($user->media->image) ? asset('/uploads/' . $user->media->image) : asset('/img/demo/avatars/avatar-m.png') }}'); background-size: cover;">
                             </span>

@@ -8,11 +8,7 @@
         </h1>
     </div>
 
-    @if ($errors->any())
-        <div class="alert alert-danger text-dark">{{ $errors->first() }}</div>
-    @endif
-
-    <form method="POST" action="{{ route('upload.avatar', ['id' => request('id')]) }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('upload.avatar', $user) }}" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-xl-6">
@@ -23,7 +19,7 @@
                         </div>
                         <div class="panel-content">
                             <div class="form-group">
-                                <img src="{{ $avatarUrl }}" alt="avatar" class="img-responsive" width="200">
+                                <img src="{{ $avatarUrl ?: asset('img/demo/avatars/avatar-m.png') }}" alt="avatar" class="img-responsive" width="200">
                             </div>
 
                             <div class="form-group">

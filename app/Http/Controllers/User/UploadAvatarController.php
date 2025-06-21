@@ -26,12 +26,12 @@ class UploadAvatarController extends Controller
 
     public function upload(UploadAvatarRequest $request, ?User $user = null): RedirectResponse
     {
+        $user = $user ?? auth()->user();
         $this->authorize('update', $user);
 
         try {
             $this->avatarService->upload($user, $request->file('image'));
-
-            return redirect()->route('upload.avatar.form', ['id' => $user->id])
+            return redirect()->route('users.profile', ['id' => $user->id])
                 ->with('success', 'Аватар успешно загружен.');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors(['error' => 'Ошибка загрузки: ' . $e->getMessage()]);
