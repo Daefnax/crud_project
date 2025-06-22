@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class UserMedia extends Model
 {
     use HasFactory;
+
+    protected $table = 'user_media';
     protected $fillable = [
         'user_id',
         'image',

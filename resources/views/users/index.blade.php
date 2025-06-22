@@ -59,7 +59,7 @@
                                                 class="fa fa-edit"></i> Редактировать</a>
                                         <a class="dropdown-item" href="{{ route('users.security', $user) }}"><i
                                                 class="fa fa-lock"></i> Безопасность</a>
-                                        <a class="dropdown-item" href="{{ route('status', ['id' => $user->id]) }}"><i
+                                        <a class="dropdown-item" href="{{ route('users.status', $user) }}"><i
                                                 class="fa fa-sun"></i> Установить статус</a>
                                         <a class="dropdown-item"
                                            href="{{ route('upload.avatar.form', $user) }}">

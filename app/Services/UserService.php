@@ -43,9 +43,10 @@ class UserService
 
     public function updateStatus(User $user, string $status): void
     {
-        $media = $user->media()->firstOrCreate([]);
-        $media->status = $status;
-        $media->save();
+        $user->media()->updateOrCreate(
+            ['user_id' => $user->id],
+            ['status' => $status]
+        );
     }
 
     public function updateInfo(User $user, array $data): void

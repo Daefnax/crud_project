@@ -8,12 +8,8 @@
     </h1>
 </div>
 
-<form method="POST" action="{{ route('update.status') }}">
+<form method="POST" action="{{ route('update.status', $user) }}">
     @csrf
-
-    @if(auth()->user()->can('admin'))
-        <input type="hidden" name="user_id" value="{{ $targetUser->id }}">
-    @endif
 
     <div class="row">
         <div class="col-xl-6">

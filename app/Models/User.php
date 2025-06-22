@@ -60,7 +60,7 @@ class User extends Authenticatable
 
     public function media()
     {
-        return $this->hasOne(UserMedia::class);
+        return $this->hasOne(UserMedia::class, 'user_id', 'id');
     }
 
     public function hasRole(string $role): bool

@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Status;
+namespace App\Http\Controllers\User\Status;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateStatusRequest;
 use App\Models\User;
 use App\Services\UserService;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
 
 class UpdateStatusController extends Controller
 {
@@ -15,15 +13,15 @@ class UpdateStatusController extends Controller
     {
     }
 
-    public function update(UpdateStatusRequest $request)
+    public function update(UpdateStatusRequest $request, User $user)
     {
-        $user = $this->userService->getUserById($request->input('user_id', auth()->id()));
-
         $this->authorize('update', $user);
+
+        $user = User::findOrFail($user->id);
 
         $this->userService->updateStatus($user, $request->input('status'));
 
-        return redirect()->route('status', ['id' => $user->id])
+        return redirect()->route('users.index')
             ->with('success', 'Статус успешно обновлён.');
     }
 }

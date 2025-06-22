@@ -17,11 +17,12 @@ class UpdateStatusTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->post(route('update.status'), [
+        $response = $this->post(route('update.status', $user), [
             'status' => 'away',
         ]);
 
-        $response->assertRedirect(route('status', ['id' => $user->id]));
+        $response->assertRedirect(route('users.index'));
+        $response->assertSessionHas('success', 'Статус успешно обновлён.');
         $this->assertDatabaseHas('user_media', [
             'user_id' => $user->id,
             'status' => 'away',
@@ -36,12 +37,11 @@ class UpdateStatusTest extends TestCase
 
         $this->actingAs($admin);
 
-        $response = $this->post(route('update.status'), [
+        $response = $this->post(route('update.status', $user), [
             'status' => 'do_not_disturb',
-            'user_id' => $user->id,
         ]);
 
-        $response->assertRedirect(route('status', ['id' => $user->id]));
+        $response->assertRedirect(route('users.index'));
         $this->assertDatabaseHas('user_media', [
             'user_id' => $user->id,
             'status' => 'do_not_disturb',
@@ -56,9 +56,8 @@ class UpdateStatusTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->post(route('update.status'), [
+        $response = $this->post(route('update.status', $other), [
             'status' => 'online',
-            'user_id' => $other->id,
         ]);
 
         $response->assertStatus(403);
@@ -70,7 +69,7 @@ class UpdateStatusTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->post(route('update.status'), [
+        $response = $this->post(route('update.status', $user), [
             'status' => 'invalid-status',
         ]);
 
