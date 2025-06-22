@@ -8,6 +8,8 @@ use App\Http\Controllers\Register\RegisterPostController;
 use App\Http\Controllers\Security\UpdateSecurityController;
 use App\Http\Controllers\Status\StatusController;
 use App\Http\Controllers\Status\UpdateStatusController;
+use App\Http\Controllers\User\AvatarFormController;
+use App\Http\Controllers\User\AvatarUploadController;
 use App\Http\Controllers\User\CreateUserFormController;
 use App\Http\Controllers\User\CreateUserPostController;
 use App\Http\Controllers\User\DeleteUserController;
@@ -15,7 +17,6 @@ use App\Http\Controllers\User\EditUserController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Security\SecurityController;
 use App\Http\Controllers\User\UpdateUserController;
-use App\Http\Controllers\User\UploadAvatarController;
 use App\Http\Controllers\User\UsersController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,8 +43,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/{user?}/security', [SecurityController::class, 'show'])->name('users.security');
     Route::post('/security', [UpdateSecurityController::class, 'update'])->name('security.update');
 
-    Route::get('/users/{user?}/avatar', [UploadAvatarController::class, 'showForm'])->name('upload.avatar.form');
-    Route::post('/users/{user?}/avatar', [UploadAvatarController::class, 'upload'])->name('upload.avatar');
+    Route::get('/users/{user?}/avatar', [AvatarFormController::class, 'showForm'])->name('upload.avatar.form');
+    Route::post('/users/{user?}/avatar', [AvatarUploadController::class, 'upload'])->name('upload.avatar');
 
     Route::get('/status/{id?}', [StatusController::class, 'show'])->name('status');
     Route::post('/update_status', [UpdateStatusController::class, 'update'])->name('update.status');

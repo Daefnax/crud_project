@@ -9,29 +9,19 @@ use App\Services\AvatarService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
-class UploadAvatarController extends Controller
+class AvatarUploadController extends Controller
 {
     public function __construct(private AvatarService $avatarService)
     {
     }
 
-    public function showForm(?User $user = null): View
+    public function upload(UploadAvatarRequest $request, User $user): RedirectResponse
     {
-        $this->authorize('update', $user);
-
-        $avatarUrl = $this->avatarService->getAvatarUrl($user);
-
-        return view('users.avatar', compact('avatarUrl', 'user'));
-    }
-
-    public function upload(UploadAvatarRequest $request, ?User $user = null): RedirectResponse
-    {
-        $user = $user ?? auth()->user();
         $this->authorize('update', $user);
 
         try {
             $this->avatarService->upload($user, $request->file('image'));
-            return redirect()->route('users.profile', ['id' => $user->id])
+            return redirect()->route('users.profile', $user)
                 ->with('success', 'Аватар успешно загружен.');
         } catch (\Throwable $e) {
             return redirect()->back()->withErrors(['error' => 'Ошибка загрузки: ' . $e->getMessage()]);
