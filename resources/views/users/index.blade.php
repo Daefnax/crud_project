@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-xl-12">
             @if ($isAdmin)
-                <a class="btn btn-success" href="{{ route('users.create') }}">Добавить</a>
+                <a class="btn btn-success" href="{{ route('users.create') }}" data-test="add-user-btn">Добавить</a>
             @endif
 
             <div class="border-faded bg-faded p-3 mb-g d-flex mt-3">

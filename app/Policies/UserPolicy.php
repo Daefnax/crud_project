@@ -14,6 +14,11 @@ class UserPolicy
         return true;
     }
 
+    public function viewAny(User $authUser) : bool
+    {
+        return true;
+    }
+
     public function update(User $authUser, User $targetUser): bool
     {
         return $authUser->id === $targetUser->id || $authUser->hasRole('admin');

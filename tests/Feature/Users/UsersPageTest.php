@@ -17,9 +17,9 @@ class UsersPageTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $this->get('/users')
+        $this->get(route('users.index'))
             ->assertOk()
-            ->assertViewIs('users')
+            ->assertViewIs('users.index')
             ->assertViewHas('users');
     }
 
@@ -27,18 +27,18 @@ class UsersPageTest extends TestCase
     public function only_admin_sees_add_button(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
-        $nonAdmin = User::factory()->create(['role' => 'users']);
+        $nonAdmin = User::factory()->create(['role' => 'user']);
 
         $this->actingAs($admin);
-        $this->get('/users')->assertSee('Добавить');
+        $this->get(route('users.index'))->assertSee('data-test="add-user-btn"', false);
 
         $this->actingAs($nonAdmin);
-        $this->get('/users')->assertDontSee('Добавить');
+        $this->get(route('users.index'))->assertDontSee('data-test="add-user-btn"', false);
     }
 
     #[Test]
     public function guests_are_redirected_to_login(): void
     {
-        $this->get('/users')->assertRedirect('/login');
+        $this->get(route('users.index'))->assertRedirect(route('login'));
     }
 }
